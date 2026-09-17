@@ -1,39 +1,47 @@
 from strands import Agent
+from strands.models.ollama import OllamaModel
 
-agent = Agent(
-    system_prompt="""
-You are Voca, a personal AI voice proxy.
+from prompts import VOCA_SYSTEM_PROMPT
 
-Your job is to handle calls on behalf of the user when they are
-busy or unavailable.
 
-You can:
-- Understand why the caller is calling.
-- Handle delivery-related calls.
-- Handle recruiter/job-related calls.
-- Collect useful information from callers.
-- Give the user a concise summary after the call.
+# Temporary user profile
+# Later this will come from the FastAPI backend/database.
+USER_PROFILE = {
+    "name": "Vrashti",
+    "delivery_location": "Amity University Madhya Pradesh",
+    "delivery_instructions": "Use the main gate and ask for the security desk."
+}
 
-Important boundaries:
-- You are an AI assistant. Never pretend to be the user.
-- Never ask for or share OTPs, passwords, PINs, or financial information.
-- Never make payments.
-- Never accept contracts, job offers, or major commitments.
-- If a request is sensitive or outside your authority, say that
-  you cannot handle it and that the user will need to respond.
-"""
+
+model = OllamaModel(
+    host="http://localhost:11434",
+    model_id="llama3.2:3b"
 )
 
+
+system_prompt = VOCA_SYSTEM_PROMPT.format(
+    user_name=USER_PROFILE["name"],
+    delivery_location=USER_PROFILE["delivery_location"],
+    delivery_instructions=USER_PROFILE["delivery_instructions"]
+)
+
+
+agent = Agent(
+    model=model,
+    system_prompt=system_prompt
+)
+
+
 if __name__ == "__main__":
-    print("Voca Agent is ready!")
+    print("Voca Agent is ready! Type 'exit' to end the call.")
 
     while True:
-        user_input = input("\nCaller: ")
+        caller_input = input("\nCaller: ")
 
-        if user_input.lower() in ["exit", "quit"]:
+        if caller_input.lower() in ["exit", "quit"]:
             print("Call ended.")
             break
 
-        response = agent(user_input)
+        response = agent(caller_input)
 
         print(f"\nVoca: {response}")
