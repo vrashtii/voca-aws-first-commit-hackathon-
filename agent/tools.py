@@ -6,9 +6,10 @@ from profile import AGENT_PROFILE
 @tool
 def get_delivery_info() -> str:
     """
-    Get the user's configured delivery location and delivery instructions.
+    Get the user's configured delivery information.
 
-    Use this tool when a caller needs delivery or location information.
+    Use this tool only when the caller asks for delivery,
+    location, address, gate, or delivery instructions.
     """
 
     delivery = AGENT_PROFILE.get("delivery", {})
@@ -17,19 +18,29 @@ def get_delivery_info() -> str:
     instructions = delivery.get("instructions")
 
     if not location and not instructions:
-        return "No delivery information is currently configured."
+        return (
+            "No delivery location or delivery instructions "
+            "are currently configured for this user."
+        )
 
-    return (
-        f"Delivery location: {location}\n"
-        f"Delivery instructions: {instructions}"
-    )
+    result = []
+
+    if location:
+        result.append(f"Delivery location: {location}")
+
+    if instructions:
+        result.append(f"Delivery instructions: {instructions}")
+
+    return "\n".join(result)
+
+
 @tool
 def get_job_profile() -> str:
     """
-    Get the user's configured professional and job-seeking information.
+    Get the user's configured professional information.
 
-    Use this tool when a recruiter or professional caller asks about
-    the user's skills, preferred roles, experience, or resume.
+    Use this tool only when a recruiter or professional caller
+    asks about the user's skills, roles, experience, or resume.
     """
 
     job = AGENT_PROFILE.get("job", {})
@@ -38,7 +49,10 @@ def get_job_profile() -> str:
     details = job.get("details", {})
 
     if not resume and not details:
-        return "No professional profile information is currently configured."
+        return (
+            "No professional profile information "
+            "is currently configured for this user."
+        )
 
     result = []
 

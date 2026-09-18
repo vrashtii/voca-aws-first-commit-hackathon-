@@ -1,4 +1,7 @@
-# User-configured Voca agent profile
+# Temporary user-configured Voca agent profile
+#
+# This is only for local development.
+# Later, this information will come from the FastAPI + SQLite backend.
 
 AGENT_PROFILE = {
     "user_name": "Vrashti",
@@ -14,18 +17,13 @@ AGENT_PROFILE = {
     ],
 
     "delivery": {
-        "location": "Amity University Madhya Pradesh",
-        "instructions": "Use the main gate and ask the security desk for further directions."
+        "location": None,
+        "instructions": None
     },
 
     "job": {
-    "resume": "Vrashti's resume",
-    "details": {
-        "skills": ["C++", "JavaScript", "React", "DSA"],
-        "preferred_roles": ["Software Engineer", "SDE Intern"],
-        "experience": "Student / currently pursuing B.Tech CSE",
-        "availability": "Available for internship opportunities"
-    }
+        "resume": None,
+        "details": {}
     },
 
     "receptionist": {
