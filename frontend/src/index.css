@@ -1,0 +1,93 @@
+:root {
+  --bg: #0b0d14;
+  --bg-elevated: #12151f;
+  --bg-soft: #171b27;
+  --border: #262b3a;
+  --text: #a8b0c2;
+  --text-h: #f3f5fb;
+  --muted: #7d8598;
+  --accent: #8b7cff;
+  --accent-2: #6ea8ff;
+  --accent-soft: rgba(139, 124, 255, 0.12);
+  --accent-border: rgba(139, 124, 255, 0.35);
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  --radius: 16px;
+  --sans: Inter, system-ui, 'Segoe UI', Roboto, sans-serif;
+  --max: 1080px;
+
+  font: 16px/1.6 var(--sans);
+  color: var(--text);
+  background: var(--bg);
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--bg);
+}
+
+#root {
+  min-height: 100svh;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--sans);
+  color: var(--text-h);
+  letter-spacing: -0.03em;
+}
+
+button {
+  font-family: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
