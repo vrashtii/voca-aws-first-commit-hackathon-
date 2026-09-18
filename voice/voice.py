@@ -1,5 +1,9 @@
 import speech_recognition as sr
 import pyttsx3
+def speak(text):
+    engine = pyttsx3.init()
+    engine.say(text)
+    engine.runAndWait()
 
 recognizer = sr.Recognizer()
 
@@ -13,7 +17,6 @@ text = recognizer.recognize_google(audio)
 
 print("You said:", text)
 
-engine = pyttsx3.init()
-engine.say("Hi, I am Voca, your AI voice assistant.")
-
-engine.runAndWait()
+speak("Hi, I am Voca, your AI voice assistant.")
+response = "I understood your request."
+speak(response)
