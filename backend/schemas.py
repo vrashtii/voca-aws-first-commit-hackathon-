@@ -57,3 +57,10 @@ class CallProcess(BaseModel):
     transcript: Optional[str] = None
     status: Optional[Literal["pending", "completed", "failed"]] = "completed"
     action_required: bool = False
+class CallUpdate(BaseModel):
+    caller_name: Optional[str] = None
+    call_type: Optional[str] = None
+    summary: Optional[str] = None
+    transcript: Optional[str] = None
+    status: Optional[Literal["pending", "completed", "failed"]] = None
+    action_required: Optional[bool] = None

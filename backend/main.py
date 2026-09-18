@@ -7,7 +7,8 @@ from schemas import (
     AgentResponse,
     CallCreate,
     CallResponse,
-    CallProcess,
+   CallProcess,
+CallUpdate,
 )
 import json
 
@@ -348,4 +349,67 @@ def process_call(call: CallProcess):
     return {
         "call_id": call_id,
         "message": "Call processed and saved successfully",
+    }
+@app.put("/api/calls/{call_id}")
+def update_call(call_id: int, call: CallUpdate):
+    connection = get_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(
+        "SELECT * FROM calls WHERE call_id = ?",
+        (call_id,)
+    )
+
+    existing_call = cursor.fetchone()
+
+    if existing_call is None:
+        connection.close()
+        raise HTTPException(status_code=404, detail="Call not found")
+
+    update_fields = []
+    values = []
+
+    if call.caller_name is not None:
+        update_fields.append("caller_name = ?")
+        values.append(call.caller_name)
+
+    if call.call_type is not None:
+        update_fields.append("call_type = ?")
+        values.append(call.call_type)
+
+    if call.summary is not None:
+        update_fields.append("summary = ?")
+        values.append(call.summary)
+
+    if call.transcript is not None:
+        update_fields.append("transcript = ?")
+        values.append(call.transcript)
+
+    if call.status is not None:
+        update_fields.append("status = ?")
+        values.append(call.status)
+
+    if call.action_required is not None:
+        update_fields.append("action_required = ?")
+        values.append(call.action_required)
+
+    if update_fields:
+        values.append(call_id)
+
+        cursor.execute(
+            f"""
+            UPDATE calls
+            SET {", ".join(update_fields)}
+            WHERE call_id = ?
+            """,
+            values,
+        )
+
+        connection.commit()
+
+    connection.close()
+
+    return {
+        "message": "Call updated successfully",
+        "call_id": call_id,
     }
