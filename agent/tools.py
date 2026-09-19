@@ -1,6 +1,6 @@
 from strands import tool
 
-from profile import AGENT_PROFILE
+from .profile import AGENT_PROFILE
 
 
 @tool
