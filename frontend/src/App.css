@@ -482,3 +482,152 @@ main {
     display: grid;
   }
 }
+/* =========================
+   Responsive Voca UI
+   ========================= */
+
+   @media (max-width: 1100px) {
+    .hero {
+      grid-template-columns: 1fr 0.8fr;
+      gap: 32px;
+    }
+  
+    .nav-inner,
+    .footer-inner,
+    .hero,
+    .section,
+    .cta,
+    .placeholder {
+      width: min(var(--max), calc(100% - 32px));
+    }
+  }
+  
+  @media (max-width: 860px) {
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 52px 0 64px;
+    }
+  
+    .voice-visual {
+      order: 2;
+    }
+  
+    .voice-card {
+      width: min(100%, 420px);
+    }
+  
+    .steps,
+    .feature-grid {
+      grid-template-columns: 1fr;
+    }
+  
+    .section {
+      padding-bottom: 58px;
+    }
+  
+    .cta {
+      margin-bottom: 60px;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .nav-inner,
+    .footer-inner,
+    .hero,
+    .section,
+    .cta,
+    .placeholder {
+      width: min(var(--max), calc(100% - 24px));
+    }
+  
+    .nav-inner {
+      min-height: 64px;
+    }
+  
+    .nav-links {
+      inset: 64px 12px auto;
+    }
+  
+    .hero {
+      padding: 38px 0 48px;
+      gap: 30px;
+    }
+  
+    .hero h1,
+    .placeholder h1 {
+      font-size: 2.45rem;
+    }
+  
+    .hero-kicker {
+      font-size: 1.05rem;
+    }
+  
+    .hero-text {
+      font-size: 0.95rem;
+    }
+  
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .hero-actions .btn {
+      width: 100%;
+    }
+  
+    .voice-card {
+      padding: 20px;
+      border-radius: 16px;
+    }
+  
+    .waveform {
+      gap: 5px;
+      height: 62px;
+    }
+  
+    .waveform span {
+      width: 5px;
+    }
+  
+    .step-card,
+    .feature-card {
+      padding: 20px;
+    }
+  
+    .cta {
+      padding: 26px 18px;
+    }
+  
+    .footer {
+      padding: 28px 0 24px;
+    }
+  
+    .footer-nav {
+      min-width: auto;
+    }
+  }
+  
+  @media (max-width: 420px) {
+    .hero h1,
+    .placeholder h1 {
+      font-size: 2.15rem;
+    }
+  
+    .logo {
+      font-size: 1rem;
+    }
+  
+    .logo-mark {
+      width: 27px;
+      height: 27px;
+    }
+  
+    .voice-card {
+      padding: 17px;
+    }
+  
+    .section-head h2,
+    .cta h2 {
+      font-size: 1.55rem;
+    }
+  }

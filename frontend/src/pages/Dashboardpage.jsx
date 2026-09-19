@@ -13,8 +13,24 @@ function DashboardPage() {
     navigate('/create-agent')
   }
 
+  function goCalls(event) {
+    if (event) event.preventDefault()
+    navigate('/calls')
+  }
+
+  function goSettings(event) {
+    if (event) event.preventDefault()
+    navigate('/settings')
+  }
+
+  function openCall(event, id) {
+    if (event) event.preventDefault()
+    navigate(`/calls/${id}`)
+  }
+
   const calls = [
     {
+      id: 1,
       name: 'Sarah Johnson',
       initials: 'SJ',
       time: 'Today, 10:42 AM',
@@ -24,6 +40,7 @@ function DashboardPage() {
       type: 'normal',
     },
     {
+      id: 2,
       name: 'David Miller',
       initials: 'DM',
       time: 'Today, 9:15 AM',
@@ -33,6 +50,7 @@ function DashboardPage() {
       type: 'important',
     },
     {
+      id: 3,
       name: 'Priya Sharma',
       initials: 'PS',
       time: 'Yesterday, 6:28 PM',
@@ -42,6 +60,7 @@ function DashboardPage() {
       type: 'normal',
     },
     {
+      id: 4,
       name: 'Alex Carter',
       initials: 'AC',
       time: 'Yesterday, 3:11 PM',
@@ -155,16 +174,17 @@ function DashboardPage() {
 
             <button
               type="button"
+              onClick={goCreateAgent}
               style={{
                 padding: '12px 17px',
                 borderRadius: '8px',
                 border: 'none',
-                background: '#5b4bdb',
+                background: '#5f696e',
                 color: '#ffffff',
                 fontSize: '14px',
                 fontWeight: '600',
                 cursor: 'pointer',
-                boxShadow: '0 4px 10px rgba(91, 75, 219, 0.18)',
+                boxShadow: '0 4px 10px rgba(95, 105, 110, 0.18)',
               }}
             >
               Test Your Agent
@@ -175,12 +195,14 @@ function DashboardPage() {
         {/* Main agent card */}
         <section
           style={{
-            background: '#ffffff',
-            border: '1px solid #e3e7ee',
+            background: 'rgba(255, 255, 255, 0.78)',
+            backdropFilter: 'blur(14px)',
+            WebkitBackdropFilter: 'blur(14px)',
+            border: '1px solid rgba(186, 190, 191, 0.45)',
             borderRadius: '14px',
             padding: '26px',
             marginBottom: '22px',
-            boxShadow: '0 4px 16px rgba(16, 24, 40, 0.04)',
+            boxShadow: '0 8px 24px rgba(23, 32, 51, 0.05)',
           }}
         >
           <div
@@ -207,10 +229,13 @@ function DashboardPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  background: '#eef0ff',
-                  color: '#5146b8',
+                  background:
+                    'linear-gradient(145deg, rgba(255,255,255,0.96), rgba(186,190,191,0.35))',
+                  border: '1px solid rgba(115,125,130,0.35)',
+                  color: '#5f696e',
                   fontSize: '25px',
                   fontWeight: '700',
+                  boxShadow: '0 4px 10px rgba(23,32,51,0.05)',
                 }}
               >
                 V
@@ -295,7 +320,7 @@ function DashboardPage() {
               style={{
                 padding: '18px',
                 borderRadius: '10px',
-                background: '#f8fafc',
+                background: 'rgba(248,250,252,0.82)',
                 border: '1px solid #eef1f5',
               }}
             >
@@ -336,7 +361,7 @@ function DashboardPage() {
                           height: `${height}px`,
                           borderRadius: '4px',
                           background:
-                            index % 3 === 0 ? '#5b4bdb' : '#9b91ef',
+                            index % 2 === 0 ? '#737d82' : '#babebf',
                         }}
                       />
                     )
@@ -359,7 +384,7 @@ function DashboardPage() {
               style={{
                 padding: '18px',
                 borderRadius: '10px',
-                background: '#f8fafc',
+                background: 'rgba(248,250,252,0.82)',
                 border: '1px solid #eef1f5',
               }}
             >
@@ -400,7 +425,7 @@ function DashboardPage() {
               style={{
                 padding: '18px',
                 borderRadius: '10px',
-                background: '#f8fafc',
+                background: 'rgba(248,250,252,0.82)',
                 border: '1px solid #eef1f5',
               }}
             >
@@ -451,6 +476,8 @@ function DashboardPage() {
               alignItems: 'center',
               justifyContent: 'space-between',
               marginBottom: '12px',
+              gap: '15px',
+              flexWrap: 'wrap',
             }}
           >
             <h2
@@ -469,7 +496,7 @@ function DashboardPage() {
                 color: '#667085',
               }}
             >
-              September 18, 2026
+              September 19, 2026
             </span>
           </div>
 
@@ -489,11 +516,13 @@ function DashboardPage() {
               <div
                 key={label}
                 style={{
-                  background: '#ffffff',
-                  border: '1px solid #e3e7ee',
+                  background: 'rgba(255,255,255,0.78)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(186,190,191,0.4)',
                   borderRadius: '12px',
                   padding: '19px',
-                  boxShadow: '0 2px 10px rgba(16, 24, 40, 0.025)',
+                  boxShadow: '0 4px 14px rgba(16,24,40,0.035)',
                 }}
               >
                 <p
@@ -525,10 +554,13 @@ function DashboardPage() {
         {/* Recent calls */}
         <section
           style={{
-            background: '#ffffff',
-            border: '1px solid #e3e7ee',
+            background: 'rgba(255,255,255,0.78)',
+            backdropFilter: 'blur(14px)',
+            WebkitBackdropFilter: 'blur(14px)',
+            border: '1px solid rgba(186,190,191,0.45)',
             borderRadius: '14px',
-            boxShadow: '0 4px 16px rgba(16, 24, 40, 0.035)',
+            boxShadow: '0 8px 24px rgba(16,24,40,0.045)',
+            overflow: 'hidden',
           }}
         >
           <div
@@ -566,12 +598,13 @@ function DashboardPage() {
 
             <button
               type="button"
+              onClick={goCalls}
               style={{
                 border: 'none',
                 background: 'transparent',
-                color: '#5b4bdb',
+                color: '#5f696e',
                 fontSize: '14px',
-                fontWeight: '600',
+                fontWeight: '700',
                 cursor: 'pointer',
               }}
             >
@@ -581,18 +614,25 @@ function DashboardPage() {
 
           <div>
             {calls.map((call, index) => (
-              <div
-                key={call.name}
+              <button
+                type="button"
+                key={call.id}
+                onClick={(event) => openCall(event, call.id)}
                 style={{
+                  width: '100%',
                   display: 'grid',
                   gridTemplateColumns: '1.4fr 1.3fr 0.7fr 0.9fr 1.8fr',
                   gap: '18px',
                   alignItems: 'center',
                   padding: '18px 22px',
+                  border: 'none',
                   borderBottom:
                     index === calls.length - 1
                       ? 'none'
                       : '1px solid #f0f2f5',
+                  background: 'transparent',
+                  textAlign: 'left',
+                  cursor: 'pointer',
                 }}
               >
                 <div
@@ -616,13 +656,13 @@ function DashboardPage() {
                           ? '#fef3c7'
                           : call.type === 'missed'
                             ? '#f3f4f6'
-                            : '#eef0ff',
+                            : '#eef1f3',
                       color:
                         call.type === 'important'
                           ? '#92400e'
                           : call.type === 'missed'
                             ? '#4b5563'
-                            : '#5146b8',
+                            : '#5f696e',
                       fontSize: '12px',
                       fontWeight: '700',
                       flexShrink: 0,
@@ -715,12 +755,12 @@ function DashboardPage() {
                     {call.summary}
                   </p>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </section>
 
-        {/* Bottom quick actions */}
+        {/* Quick actions */}
         <section
           style={{
             marginTop: '22px',
@@ -729,57 +769,110 @@ function DashboardPage() {
             gap: '14px',
           }}
         >
-          {[
-            {
-              title: 'Test your agent',
-              text: 'Try a sample conversation before going live.',
-            },
-            {
-              title: 'Edit agent',
-              text: 'Update the name, greeting, voice or availability.',
-              action: goCreateAgent,
-            },
-            {
-              title: 'Review call summaries',
-              text: 'See what Voca discussed on your behalf.',
-            },
-          ].map((item) => (
-            <button
-              type="button"
-              key={item.title}
-              onClick={item.action}
+          <button
+            type="button"
+            onClick={goCreateAgent}
+            style={{
+              textAlign: 'left',
+              padding: '18px',
+              borderRadius: '12px',
+              border: '1px solid rgba(186,190,191,0.45)',
+              background: 'rgba(255,255,255,0.75)',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(16,24,40,0.035)',
+            }}
+          >
+            <div
               style={{
-                textAlign: 'left',
-                padding: '18px',
-                borderRadius: '12px',
-                border: '1px solid #e3e7ee',
-                background: '#ffffff',
-                cursor: item.action ? 'pointer' : 'default',
-                boxShadow: '0 2px 8px rgba(16, 24, 40, 0.025)',
+                marginBottom: '7px',
+                fontSize: '14px',
+                fontWeight: '700',
+                color: '#344054',
               }}
             >
-              <div
-                style={{
-                  marginBottom: '7px',
-                  fontSize: '14px',
-                  fontWeight: '700',
-                  color: '#344054',
-                }}
-              >
-                {item.title}
-              </div>
+              Test your agent
+            </div>
 
-              <div
-                style={{
-                  fontSize: '13px',
-                  lineHeight: 1.5,
-                  color: '#667085',
-                }}
-              >
-                {item.text}
-              </div>
-            </button>
-          ))}
+            <div
+              style={{
+                fontSize: '13px',
+                lineHeight: 1.5,
+                color: '#667085',
+              }}
+            >
+              Try a sample voice-agent setup before going live.
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={goSettings}
+            style={{
+              textAlign: 'left',
+              padding: '18px',
+              borderRadius: '12px',
+              border: '1px solid rgba(186,190,191,0.45)',
+              background: 'rgba(255,255,255,0.75)',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(16,24,40,0.035)',
+            }}
+          >
+            <div
+              style={{
+                marginBottom: '7px',
+                fontSize: '14px',
+                fontWeight: '700',
+                color: '#344054',
+              }}
+            >
+              Edit agent
+            </div>
+
+            <div
+              style={{
+                fontSize: '13px',
+                lineHeight: 1.5,
+                color: '#667085',
+              }}
+            >
+              Update the name, greeting, voice or availability.
+            </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={goCalls}
+            style={{
+              textAlign: 'left',
+              padding: '18px',
+              borderRadius: '12px',
+              border: '1px solid rgba(186,190,191,0.45)',
+              background: 'rgba(255,255,255,0.75)',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(16,24,40,0.035)',
+            }}
+          >
+            <div
+              style={{
+                marginBottom: '7px',
+                fontSize: '14px',
+                fontWeight: '700',
+                color: '#344054',
+              }}
+            >
+              Review call summaries
+            </div>
+
+            <div
+              style={{
+                fontSize: '13px',
+                lineHeight: 1.5,
+                color: '#667085',
+              }}
+            >
+              See what Voca discussed on your behalf.
+            </div>
+          </button>
         </section>
       </main>
 

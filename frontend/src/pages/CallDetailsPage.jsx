@@ -4,12 +4,12 @@ import { navigate } from '../utils/navigate'
 
 function CallDetailsPage() {
   function goHome(event) {
-    if (event) event.preventDefault()
+    event.preventDefault()
     navigate('/')
   }
 
   function goCalls(event) {
-    if (event) event.preventDefault()
+    event.preventDefault()
     navigate('/calls')
   }
 
@@ -21,7 +21,7 @@ function CallDetailsPage() {
         style={{
           maxWidth: '1180px',
           margin: '0 auto',
-          padding: '40px 24px 70px',
+          padding: '42px 24px 70px',
         }}
       >
         {/* Back */}
@@ -35,6 +35,7 @@ function CallDetailsPage() {
             marginBottom: '18px',
             color: '#667085',
             fontSize: '14px',
+            fontWeight: '600',
             cursor: 'pointer',
           }}
         >
@@ -58,9 +59,9 @@ function CallDetailsPage() {
                 margin: '0 0 8px',
                 fontSize: '12px',
                 fontWeight: '700',
-                letterSpacing: '0.08em',
+                letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: '#667085',
+                color: '#737d82',
               }}
             >
               Call Details
@@ -69,8 +70,9 @@ function CallDetailsPage() {
             <h1
               style={{
                 margin: 0,
-                fontSize: '38px',
+                fontSize: 'clamp(32px, 5vw, 44px)',
                 lineHeight: 1.1,
+                letterSpacing: '-0.03em',
                 color: '#172033',
               }}
             >
@@ -79,7 +81,7 @@ function CallDetailsPage() {
 
             <p
               style={{
-                margin: '8px 0 0',
+                margin: '9px 0 0',
                 color: '#667085',
                 fontSize: '14px',
               }}
@@ -93,9 +95,10 @@ function CallDetailsPage() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '7px',
-              padding: '7px 11px',
+              padding: '8px 12px',
               borderRadius: '999px',
               background: '#ecfdf3',
+              border: '1px solid #c7f0d7',
               color: '#15803d',
               fontSize: '12px',
               fontWeight: '700',
@@ -109,7 +112,7 @@ function CallDetailsPage() {
                 background: '#16a34a',
               }}
             />
-            Handled
+            Call handled
           </span>
         </div>
 
@@ -117,7 +120,7 @@ function CallDetailsPage() {
         <section
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
             gap: '14px',
             marginBottom: '22px',
           }}
@@ -131,10 +134,12 @@ function CallDetailsPage() {
               key={label}
               style={{
                 padding: '18px',
-                background: '#ffffff',
-                border: '1px solid #e3e7ee',
-                borderRadius: '12px',
-                boxShadow: '0 3px 12px rgba(16, 24, 40, 0.03)',
+                borderRadius: '14px',
+                background: 'rgba(255,255,255,0.74)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
+                border: '1px solid rgba(186,190,191,0.45)',
+                boxShadow: '0 6px 18px rgba(23,32,51,0.04)',
               }}
             >
               <p
@@ -161,48 +166,52 @@ function CallDetailsPage() {
           ))}
         </section>
 
-        {/* Main content */}
+        {/* Content */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '1.15fr 0.85fr',
+            gridTemplateColumns: 'minmax(0, 1.2fr) minmax(280px, 0.8fr)',
             gap: '22px',
             alignItems: 'start',
           }}
         >
-          {/* Left */}
+          {/* LEFT */}
           <div>
             {/* AI Summary */}
             <section
               style={{
-                background: '#ffffff',
-                border: '1px solid #e3e7ee',
-                borderRadius: '14px',
                 padding: '24px',
                 marginBottom: '22px',
-                boxShadow: '0 4px 16px rgba(16, 24, 40, 0.035)',
+                borderRadius: '16px',
+                background:
+                  'linear-gradient(145deg, rgba(255,255,255,0.88), rgba(242,244,245,0.74))',
+                backdropFilter: 'blur(14px)',
+                WebkitBackdropFilter: 'blur(14px)',
+                border: '1px solid rgba(186,190,191,0.5)',
+                boxShadow: '0 10px 28px rgba(23,32,51,0.05)',
               }}
             >
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: '10px',
+                  gap: '12px',
                   marginBottom: '18px',
                 }}
               >
                 <div
                   style={{
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '9px',
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '11px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: '#eef1f3',
+                    background:
+                      'linear-gradient(145deg, #ffffff, #e3e6e7)',
+                    border: '1px solid rgba(115,125,130,0.24)',
                     color: '#5f696e',
-                    fontWeight: '700',
-                    fontSize: '14px',
+                    fontWeight: '800',
                   }}
                 >
                   V
@@ -212,7 +221,7 @@ function CallDetailsPage() {
                   <h2
                     style={{
                       margin: 0,
-                      fontSize: '19px',
+                      fontSize: '20px',
                       color: '#172033',
                     }}
                   >
@@ -226,7 +235,7 @@ function CallDetailsPage() {
                       color: '#667085',
                     }}
                   >
-                    Generated by Voca after the call
+                    Summary generated by Voca
                   </p>
                 </div>
               </div>
@@ -235,7 +244,7 @@ function CallDetailsPage() {
                 style={{
                   margin: 0,
                   fontSize: '14px',
-                  lineHeight: 1.7,
+                  lineHeight: 1.75,
                   color: '#475467',
                 }}
               >
@@ -243,54 +252,67 @@ function CallDetailsPage() {
                 the meeting time and noted that Sarah will send the final
                 agenda before the meeting.
               </p>
+
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  marginTop: '18px',
+                  padding: '10px 12px',
+                  borderRadius: '10px',
+                  background: 'rgba(186,190,191,0.13)',
+                  color: '#59666c',
+                  fontSize: '12px',
+                  fontWeight: '600',
+                }}
+              >
+                <span>◉</span>
+                Voca successfully handled this conversation.
+              </div>
             </section>
 
-            {/* Key points */}
+            {/* Key Points */}
             <section
               style={{
-                background: '#ffffff',
-                border: '1px solid #e3e7ee',
-                borderRadius: '14px',
                 padding: '24px',
                 marginBottom: '22px',
-                boxShadow: '0 4px 16px rgba(16, 24, 40, 0.035)',
+                borderRadius: '16px',
+                background: '#ffffff',
+                border: '1px solid #e3e7ee',
+                boxShadow: '0 6px 18px rgba(23,32,51,0.04)',
               }}
             >
               <h2
                 style={{
                   margin: '0 0 18px',
-                  fontSize: '19px',
+                  fontSize: '20px',
                   color: '#172033',
                 }}
               >
                 Key Points
               </h2>
 
-              <div
-                style={{
-                  display: 'grid',
-                  gap: '12px',
-                }}
-              >
+              <div style={{ display: 'grid', gap: '13px' }}>
                 {[
-                  'Meeting is scheduled for tomorrow.',
-                  'Sarah will send the final agenda.',
-                  'No additional action is required before the meeting.',
+                  'Meeting is scheduled for tomorrow at 11:00 AM.',
+                  'Sarah will send the final agenda before the meeting.',
+                  'No additional action is required right now.',
                 ].map((point) => (
                   <div
                     key={point}
                     style={{
                       display: 'flex',
-                      gap: '10px',
                       alignItems: 'flex-start',
+                      gap: '11px',
                     }}
                   >
                     <span
                       style={{
-                        marginTop: '7px',
-                        width: '6px',
-                        height: '6px',
+                        width: '8px',
+                        height: '8px',
                         flexShrink: 0,
+                        marginTop: '7px',
                         borderRadius: '50%',
                         background: '#737d82',
                       }}
@@ -311,20 +333,20 @@ function CallDetailsPage() {
               </div>
             </section>
 
-            {/* Transcript */}
+            {/* Conversation */}
             <section
               style={{
+                padding: '24px',
+                borderRadius: '16px',
                 background: '#ffffff',
                 border: '1px solid #e3e7ee',
-                borderRadius: '14px',
-                padding: '24px',
-                boxShadow: '0 4px 16px rgba(16, 24, 40, 0.035)',
+                boxShadow: '0 6px 18px rgba(23,32,51,0.04)',
               }}
             >
               <h2
                 style={{
                   margin: '0 0 5px',
-                  fontSize: '19px',
+                  fontSize: '20px',
                   color: '#172033',
                 }}
               >
@@ -341,18 +363,14 @@ function CallDetailsPage() {
                 Transcript from the call
               </p>
 
-              <div
-                style={{
-                  display: 'grid',
-                  gap: '18px',
-                }}
-              >
+              <div style={{ display: 'grid', gap: '18px' }}>
                 <div>
                   <div
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      marginBottom: '6px',
+                      gap: '10px',
+                      marginBottom: '7px',
                     }}
                   >
                     <strong
@@ -376,11 +394,12 @@ function CallDetailsPage() {
 
                   <div
                     style={{
-                      padding: '13px 15px',
+                      padding: '14px 16px',
+                      borderRadius: '12px',
                       background: '#f8fafc',
-                      borderRadius: '10px',
+                      border: '1px solid #eef1f4',
                       fontSize: '14px',
-                      lineHeight: 1.55,
+                      lineHeight: 1.6,
                       color: '#475467',
                     }}
                   >
@@ -393,7 +412,8 @@ function CallDetailsPage() {
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      marginBottom: '6px',
+                      gap: '10px',
+                      marginBottom: '7px',
                     }}
                   >
                     <strong
@@ -417,11 +437,12 @@ function CallDetailsPage() {
 
                   <div
                     style={{
-                      padding: '13px 15px',
+                      padding: '14px 16px',
+                      borderRadius: '12px',
                       background: '#f1f3f4',
-                      borderRadius: '10px',
+                      border: '1px solid #e6e9eb',
                       fontSize: '14px',
-                      lineHeight: 1.55,
+                      lineHeight: 1.6,
                       color: '#475467',
                     }}
                   >
@@ -435,7 +456,8 @@ function CallDetailsPage() {
                     style={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      marginBottom: '6px',
+                      gap: '10px',
+                      marginBottom: '7px',
                     }}
                   >
                     <strong
@@ -459,11 +481,12 @@ function CallDetailsPage() {
 
                   <div
                     style={{
-                      padding: '13px 15px',
+                      padding: '14px 16px',
+                      borderRadius: '12px',
                       background: '#f8fafc',
-                      borderRadius: '10px',
+                      border: '1px solid #eef1f4',
                       fontSize: '14px',
-                      lineHeight: 1.55,
+                      lineHeight: 1.6,
                       color: '#475467',
                     }}
                   >
@@ -474,17 +497,19 @@ function CallDetailsPage() {
             </section>
           </div>
 
-          {/* Right */}
+          {/* RIGHT */}
           <aside>
-            {/* Action panel */}
+            {/* Call Actions */}
             <section
               style={{
-                background: '#ffffff',
-                border: '1px solid #e3e7ee',
-                borderRadius: '14px',
                 padding: '22px',
                 marginBottom: '22px',
-                boxShadow: '0 4px 16px rgba(16, 24, 40, 0.035)',
+                borderRadius: '16px',
+                background: 'rgba(255,255,255,0.76)',
+                backdropFilter: 'blur(14px)',
+                WebkitBackdropFilter: 'blur(14px)',
+                border: '1px solid rgba(186,190,191,0.45)',
+                boxShadow: '0 8px 22px rgba(23,32,51,0.045)',
               }}
             >
               <h2
@@ -497,23 +522,18 @@ function CallDetailsPage() {
                 Actions
               </h2>
 
-              <div
-                style={{
-                  display: 'grid',
-                  gap: '10px',
-                }}
-              >
+              <div style={{ display: 'grid', gap: '10px' }}>
                 <button
                   type="button"
                   style={{
-                    width: '100%',
                     minHeight: '42px',
-                    borderRadius: '8px',
+                    borderRadius: '9px',
                     border: '1px solid #d0d5dd',
                     background: '#ffffff',
                     color: '#344054',
                     fontSize: '13px',
                     fontWeight: '600',
+                    cursor: 'pointer',
                   }}
                 >
                   Mark as Important
@@ -522,14 +542,14 @@ function CallDetailsPage() {
                 <button
                   type="button"
                   style={{
-                    width: '100%',
                     minHeight: '42px',
-                    borderRadius: '8px',
+                    borderRadius: '9px',
                     border: '1px solid #d0d5dd',
                     background: '#ffffff',
                     color: '#344054',
                     fontSize: '13px',
                     fontWeight: '600',
+                    cursor: 'pointer',
                   }}
                 >
                   Add Note
@@ -538,14 +558,14 @@ function CallDetailsPage() {
                 <button
                   type="button"
                   style={{
-                    width: '100%',
                     minHeight: '42px',
-                    borderRadius: '8px',
-                    border: '1px solid #d0d5dd',
-                    background: '#ffffff',
-                    color: '#344054',
+                    borderRadius: '9px',
+                    border: 'none',
+                    background: '#5f696e',
+                    color: '#ffffff',
                     fontSize: '13px',
-                    fontWeight: '600',
+                    fontWeight: '700',
+                    cursor: 'pointer',
                   }}
                 >
                   Call Back
@@ -556,12 +576,12 @@ function CallDetailsPage() {
             {/* Follow-up */}
             <section
               style={{
-                background: '#ffffff',
-                border: '1px solid #e3e7ee',
-                borderRadius: '14px',
                 padding: '22px',
                 marginBottom: '22px',
-                boxShadow: '0 4px 16px rgba(16, 24, 40, 0.035)',
+                borderRadius: '16px',
+                background: '#ffffff',
+                border: '1px solid #e3e7ee',
+                boxShadow: '0 6px 18px rgba(23,32,51,0.04)',
               }}
             >
               <h2
@@ -574,32 +594,41 @@ function CallDetailsPage() {
                 Follow-up
               </h2>
 
-              <p
+              <div
                 style={{
-                  margin: 0,
-                  fontSize: '13px',
-                  lineHeight: 1.6,
-                  color: '#667085',
+                  padding: '13px 14px',
+                  borderRadius: '10px',
+                  background: '#f8fafc',
+                  border: '1px solid #eef1f4',
                 }}
               >
-                Sarah will send the meeting agenda before tomorrow’s
-                meeting.
-              </p>
+                <p
+                  style={{
+                    margin: 0,
+                    fontSize: '13px',
+                    lineHeight: 1.6,
+                    color: '#667085',
+                  }}
+                >
+                  Sarah will send the meeting agenda before tomorrow’s
+                  meeting.
+                </p>
+              </div>
             </section>
 
             {/* Voice Activity */}
             <section
               style={{
+                padding: '22px',
+                borderRadius: '16px',
                 background: '#ffffff',
                 border: '1px solid #e3e7ee',
-                borderRadius: '14px',
-                padding: '22px',
-                boxShadow: '0 4px 16px rgba(16, 24, 40, 0.035)',
+                boxShadow: '0 6px 18px rgba(23,32,51,0.04)',
               }}
             >
               <h2
                 style={{
-                  margin: '0 0 6px',
+                  margin: '0 0 5px',
                   fontSize: '18px',
                   color: '#172033',
                 }}
@@ -614,7 +643,7 @@ function CallDetailsPage() {
                   color: '#667085',
                 }}
               >
-                Call activity overview
+                Audio activity during the call
               </p>
 
               <div
@@ -624,15 +653,18 @@ function CallDetailsPage() {
                   justifyContent: 'center',
                   gap: '5px',
                   height: '58px',
-                  marginBottom: '15px',
+                  padding: '0 4px',
+                  borderRadius: '10px',
+                  background: '#f8fafc',
+                  border: '1px solid #eef1f4',
                 }}
               >
-                {[18, 29, 21, 39, 25, 45, 30, 22, 34, 19, 31, 24].map(
+                {[18, 28, 21, 39, 25, 45, 31, 23, 35, 20, 30, 24].map(
                   (height, index) => (
                     <span
                       key={index}
                       style={{
-                        width: '5px',
+                        width: '4px',
                         height: `${height}px`,
                         borderRadius: '999px',
                         background:
@@ -647,13 +679,14 @@ function CallDetailsPage() {
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
+                  marginTop: '10px',
                   fontSize: '11px',
                   color: '#98a2b3',
                 }}
               >
-                <span>Started</span>
+                <span>Start</span>
                 <span>4m 18s</span>
-                <span>Ended</span>
+                <span>End</span>
               </div>
             </section>
           </aside>

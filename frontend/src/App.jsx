@@ -5,6 +5,9 @@ import CreateAgentPage from './pages/CreateAgentPage'
 import DashboardPage from './pages/DashboardPage'
 import CallsPage from './pages/CallsPage'
 import CallDetailsPage from './pages/CallDetailsPage'
+import AgentSettingsPage from './pages/AgentSettingsPage'
+import LoginPage from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
 
 import './App.css'
 
@@ -37,6 +40,16 @@ function App() {
 
   if (path.startsWith('/calls/')) {
     return <CallDetailsPage />
+  }
+  if (path === '/settings') {
+    return <AgentSettingsPage />
+  }
+  if (path === '/login') {
+    return <LoginPage />
+  }
+
+  if (path === '/register') {
+    return <RegisterPage />
   }
 
   return <LandingPage />
