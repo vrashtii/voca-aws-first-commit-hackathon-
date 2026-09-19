@@ -3,6 +3,7 @@ import json
 from .agent import process_call_message, summary_agent
 from .session import CallSession
 from .call_summary import generate_call_summary
+from .tools import set_profile
 
 
 class VocaCall:
@@ -13,11 +14,20 @@ class VocaCall:
     One VocaCall object represents one complete call.
     """
 
-    def __init__(self):
+    def __init__(
+        self,
+        user_name: str = "User",
+        profile_data: dict | None = None
+    ):
         self.session = CallSession()
         self.call_summary = None
 
-        # Application-level introduction
+        self.user_name = user_name
+        self.profile_data = profile_data or {}
+
+        # Make this user's profile available to Voca tools.
+        set_profile(self.profile_data)
+
         self.intro = (
             "Hi, I'm Voca, an AI assistant. "
             "How can I help you today?"
@@ -49,9 +59,31 @@ class VocaCall:
             caller_input
         )
 
-        # Use the same AI processing pipeline that
-        # the terminal version of Voca uses.
-        response_text = process_call_message(caller_input)
+        # Keep backend profile available to tools
+        set_profile(self.profile_data)
+
+        profile_context = f"""
+Agent owner name: {self.user_name}
+
+Configured agent profile:
+{self.profile_data}
+
+This is an ongoing call.
+
+The application has already given the caller Voca's
+initial introduction.
+
+Do NOT introduce Voca again.
+
+Respond directly to the caller's current message.
+"""
+
+        # Use the same AI processing pipeline
+        # with the backend profile as context.
+        response_text = process_call_message(
+            caller_input,
+            extra_context=profile_context
+        )
 
         # Store Voca response
         self.session.add_message(
@@ -69,16 +101,18 @@ class VocaCall:
         if not self.session.is_active:
             return
 
-        # End the call
         self.session.end()
 
-        # Get complete transcript
         transcript = self.session.get_transcript()
 
-        # Generate AI summary
         summary_response = summary_agent(
             f"""
-Analyze this completed Voca call:
+Analyze this completed Voca call.
+
+The person Voca represents is:
+{self.user_name}
+
+Complete transcript:
 
 {transcript}
 """
@@ -94,17 +128,14 @@ Analyze this completed Voca call:
                     "caller_name",
                     "Unknown"
                 ),
-
                 call_type=summary_data.get(
                     "call_type",
                     "unknown"
                 ),
-
                 intent=summary_data.get(
                     "intent",
                     ""
                 ),
-
                 information_collected=(
                     self.session.get_information()
                     if self.session.get_information()
@@ -113,11 +144,7 @@ Analyze this completed Voca call:
                         []
                     )
                 ),
-
-                # Only confirmed actions from the session
-                # are allowed here.
                 actions_taken=self.session.actions_taken,
-
                 status=summary_data.get(
                     "status",
                     "unresolved"
@@ -125,8 +152,7 @@ Analyze this completed Voca call:
             )
 
         except (json.JSONDecodeError, TypeError):
-            # Safe fallback if the summary model
-            # returns invalid JSON.
+
             self.call_summary = generate_call_summary(
                 caller_name="Unknown",
                 call_type="unknown",
@@ -137,9 +163,7 @@ Analyze this completed Voca call:
             )
 
     def get_summary(self) -> dict | None:
-        """
-        Return the structured call summary.
-        """
+        """Return the structured call summary."""
 
         if self.call_summary is None:
             return None

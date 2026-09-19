@@ -1,5 +1,7 @@
 import os
 import sys
+import json
+import urllib.request
 
 import sounddevice as sd
 import speech_recognition as sr
@@ -26,10 +28,30 @@ from agent.voice_interface import VocaCall
 
 
 # ---------------------------------------------------------
+# Get agent profile from FastAPI backend
+# ---------------------------------------------------------
+
+def get_agent_profile(agent_id: int = 1) -> dict:
+    """
+    Fetch the selected Voca agent profile from the backend.
+    """
+
+    url = f"http://127.0.0.1:8000/api/agents/{agent_id}/profile"
+
+    with urllib.request.urlopen(url) as response:
+        return json.loads(
+            response.read().decode("utf-8")
+        )
+
+
+# ---------------------------------------------------------
 # Policy checker
 # ---------------------------------------------------------
 
-POLICY_PATH = os.path.join(PROJECT_ROOT, "policies")
+POLICY_PATH = os.path.join(
+    PROJECT_ROOT,
+    "policies"
+)
 
 if POLICY_PATH not in sys.path:
     sys.path.insert(0, POLICY_PATH)
@@ -160,8 +182,30 @@ def detect_sensitive_action(user_text):
 
 def run_conversation():
 
+    # -----------------------------------------------------
+    # Get the user's selected Voca agent from backend
+    # -----------------------------------------------------
+
+    agent_data = get_agent_profile(1)
+
+    print(
+        "Loaded agent:",
+        agent_data["agent_name"]
+    )
+
+    print(
+        "User:",
+        agent_data["user_name"]
+    )
+
+    # -----------------------------------------------------
     # One VocaCall object = one complete call
-    voca_call = VocaCall()
+    # -----------------------------------------------------
+
+    voca_call = VocaCall(
+        user_name=agent_data["user_name"],
+        profile_data=agent_data["profile_data"]
+    )
 
     # -----------------------------------------------------
     # Application-level introduction
@@ -170,6 +214,7 @@ def run_conversation():
     intro = voca_call.get_intro()
 
     print("Voca:", intro)
+
     speak(intro)
 
     # -----------------------------------------------------
@@ -185,10 +230,12 @@ def run_conversation():
         user_text = listen()
 
         if user_text is None:
+
             speak(
                 "Sorry, I didn't catch that. "
                 "Could you say it again?"
             )
+
             continue
 
         # ---------------------------------------------
@@ -200,9 +247,15 @@ def run_conversation():
             for word in EXIT_WORDS
         ):
 
-            goodbye_message = "Goodbye! Have a great day."
+            goodbye_message = (
+                "Goodbye! Have a great day."
+            )
 
-            print("Voca:", goodbye_message)
+            print(
+                "Voca:",
+                goodbye_message
+            )
+
             speak(goodbye_message)
 
             # -----------------------------------------
@@ -218,6 +271,7 @@ def run_conversation():
             summary = voca_call.get_summary()
 
             if summary:
+
                 print("\n--- Call Summary ---")
 
                 for key, value in summary.items():
@@ -231,12 +285,17 @@ def run_conversation():
         # Safety / Cedar policy check
         # ---------------------------------------------
 
-        sensitive_action = detect_sensitive_action(user_text)
+        sensitive_action = detect_sensitive_action(
+            user_text
+        )
 
-        allowed = check_permission(sensitive_action)
+        allowed = check_permission(
+            sensitive_action
+        )
 
         print(
-            f"Policy check -> action={sensitive_action}, "
+            f"Policy check -> "
+            f"action={sensitive_action}, "
             f"allowed={allowed}"
         )
 
@@ -251,7 +310,10 @@ def run_conversation():
                 "Is there anything else I can help you with?"
             )
 
-            print("Voca:", ai_response)
+            print(
+                "Voca:",
+                ai_response
+            )
 
             speak(ai_response)
 
@@ -261,13 +323,18 @@ def run_conversation():
         # Send caller message to YOUR Voca AI
         # ---------------------------------------------
 
-        ai_response = voca_call.process(user_text)
+        ai_response = voca_call.process(
+            user_text
+        )
 
         # ---------------------------------------------
         # Speak AI response
         # ---------------------------------------------
 
-        print("Voca:", ai_response)
+        print(
+            "Voca:",
+            ai_response
+        )
 
         speak(ai_response)
 

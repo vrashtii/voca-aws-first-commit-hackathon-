@@ -1,6 +1,15 @@
 from strands import tool
 
-from .profile import AGENT_PROFILE
+
+# Current profile used by the active Voca call.
+# This will be set by the backend before processing a call.
+CURRENT_PROFILE = {}
+
+
+def set_profile(profile: dict) -> None:
+    """Set the profile for the current Voca call."""
+    global CURRENT_PROFILE
+    CURRENT_PROFILE = profile or {}
 
 
 @tool
@@ -12,7 +21,7 @@ def get_delivery_info() -> str:
     location, address, gate, or delivery instructions.
     """
 
-    delivery = AGENT_PROFILE.get("delivery", {})
+    delivery = CURRENT_PROFILE.get("delivery", {})
 
     location = delivery.get("location")
     instructions = delivery.get("instructions")
@@ -43,7 +52,7 @@ def get_job_profile() -> str:
     asks about the user's skills, roles, experience, or resume.
     """
 
-    job = AGENT_PROFILE.get("job", {})
+    job = CURRENT_PROFILE.get("job", {})
 
     resume = job.get("resume")
     details = job.get("details", {})

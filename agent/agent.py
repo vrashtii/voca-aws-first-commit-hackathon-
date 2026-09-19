@@ -842,7 +842,10 @@ No explanation outside the JSON.
 # AI MESSAGE PROCESSING INTERFACE
 # ==================================================
 
-def process_call_message(caller_input: str) -> str:
+def process_call_message(
+    caller_input: str,
+    extra_context: str = ""
+) -> str:
     """
     Process one caller message through the Voca AI system.
 
@@ -856,6 +859,10 @@ def process_call_message(caller_input: str) -> str:
     message_intent = classify_message(caller_input)
 
     contextual_input = f"""
+Agent profile context:
+
+{extra_context}
+
 Caller message:
 
 {caller_input}
@@ -863,7 +870,6 @@ Caller message:
 Detected message type:
 
 {message_intent.intent_type}
-
 Use this detected message type as guidance.
 
 If the message type is "information":
@@ -899,13 +905,16 @@ or internal reasoning.
     # Simple information and goodbye messages must not have
     # access to tools. This is the structural fix for the
     # generic {"name": "...", "parameters": ...} output.
-    if message_intent.intent_type in {"information", "goodbye"}:
+    if message_intent.intent_type in {
+        "information",
+        "question",
+        "goodbye"
+    }:
         response = response_agent(contextual_input)
     else:
         response = agent(contextual_input)
 
     text = str(response).strip()
-
     # Defensive fallback: if the local model still returns a
     # tool-like JSON object instead of spoken language, retry
     # the response through the no-tool agent.

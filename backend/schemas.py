@@ -53,6 +53,7 @@ class CallProcess(BaseModel):
     agent_id: int
     caller_name: Optional[str] = None
     call_type: Optional[str] = None
+    caller_message: str
     summary: Optional[str] = None
     transcript: Optional[str] = None
     status: Optional[Literal["pending", "completed", "failed"]] = "completed"
