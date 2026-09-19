@@ -216,6 +216,3 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-voca.db
-frontend-share/node_modules/
-frontend-share/dist/
