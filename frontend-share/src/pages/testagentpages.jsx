@@ -16,6 +16,8 @@ function TestAgentPage() {
   const recognitionRef = useRef(null);
   const sessionIdRef = useRef(null);
   const callActiveRef = useRef(false);
+  const processingRef = useRef(false);
+  const restartListeningRef = useRef(null);
 
   const agentId = localStorage.getItem("voca_agent_id");
 
@@ -69,6 +71,7 @@ function TestAgentPage() {
       }
 
       window.speechSynthesis.cancel();
+      clearTimeout(restartListeningRef.current);
     };
   }, []);
 
@@ -145,6 +148,12 @@ function TestAgentPage() {
       return;
     }
 
+    // Do not start microphone while Voca is processing
+    // or speaking.
+    if (processingRef.current || isSpeaking) {
+      return;
+    }
+
     const SpeechRecognition =
       window.SpeechRecognition ||
       window.webkitSpeechRecognition;
@@ -188,8 +197,11 @@ function TestAgentPage() {
         event.results[0][0].transcript.trim();
 
       setIsListening(false);
+      processingRef.current = true;
 
       if (!transcript) {
+        processingRef.current = false;
+
         if (callActiveRef.current) {
           setTimeout(
             startListening,
@@ -217,6 +229,8 @@ function TestAgentPage() {
       await sendCallerMessage(
         transcript
       );
+
+      processingRef.current = false;
     };
 
     recognition.onerror = (event) => {
@@ -248,6 +262,25 @@ function TestAgentPage() {
 
     recognition.onend = () => {
       setIsListening(false);
+
+      // If recognition stopped unexpectedly while the call
+      // is still active, allow it to restart.
+      if (
+        callActiveRef.current &&
+        !processingRef.current &&
+        !isSpeaking
+      ) {
+        clearTimeout(restartListeningRef.current);
+
+        restartListeningRef.current = setTimeout(() => {
+          if (
+            callActiveRef.current &&
+            !processingRef.current
+          ) {
+            startListening();
+          }
+        }, 500);
+      }
     };
 
     recognitionRef.current =
@@ -397,6 +430,8 @@ function TestAgentPage() {
     }
 
     window.speechSynthesis.cancel();
+    clearTimeout(restartListeningRef.current);
+    processingRef.current = false;
 
     setCallState("declined");
   };
@@ -538,6 +573,8 @@ function TestAgentPage() {
     }
 
     window.speechSynthesis.cancel();
+    clearTimeout(restartListeningRef.current);
+    processingRef.current = false;
 
     try {
       const currentSession =
@@ -623,6 +660,8 @@ function TestAgentPage() {
     }
 
     window.speechSynthesis.cancel();
+    clearTimeout(restartListeningRef.current);
+    processingRef.current = false;
 
     setCallState("incoming");
 
