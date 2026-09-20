@@ -21,7 +21,6 @@ class VocaCall:
     ):
         self.session = CallSession()
         self.call_summary = None
-
         self.user_name = user_name
         self.profile_data = profile_data or {}
 
@@ -62,8 +61,12 @@ class VocaCall:
         # Keep backend profile available to tools
         set_profile(self.profile_data)
 
+        # Get complete conversation so far
+        transcript = self.session.get_transcript()
+
         profile_context = f"""
-Agent owner name: {self.user_name}
+Agent owner name:
+{self.user_name}
 
 Configured agent profile:
 {self.profile_data}
@@ -75,11 +78,32 @@ initial introduction.
 
 Do NOT introduce Voca again.
 
+IMPORTANT CONVERSATION CONTEXT:
+
+The conversation so far is:
+
+{transcript}
+
+Use this conversation history to understand:
+- references to things already mentioned
+- information already provided
+- questions that were already answered
+- the current topic of the conversation
+
+Continue the same conversation.
+
+Do NOT restart the conversation.
+
+Do NOT repeat questions that have already been answered.
+
 Respond directly to the caller's current message.
+
+The caller's current message is:
+{caller_input}
 """
 
-        # Use the same AI processing pipeline
-        # with the backend profile as context.
+        # Send current message + conversation history
+        # to the Voca AI processing pipeline.
         response_text = process_call_message(
             caller_input,
             extra_context=profile_context
@@ -113,7 +137,6 @@ The person Voca represents is:
 {self.user_name}
 
 Complete transcript:
-
 {transcript}
 """
         )
@@ -122,6 +145,8 @@ Complete transcript:
             summary_data = json.loads(
                 str(summary_response)
             )
+
+            session_information = self.session.get_information()
 
             self.call_summary = generate_call_summary(
                 caller_name=summary_data.get(
@@ -137,8 +162,8 @@ Complete transcript:
                     ""
                 ),
                 information_collected=(
-                    self.session.get_information()
-                    if self.session.get_information()
+                    session_information
+                    if session_information
                     else summary_data.get(
                         "information_collected",
                         []
@@ -152,7 +177,6 @@ Complete transcript:
             )
 
         except (json.JSONDecodeError, TypeError):
-
             self.call_summary = generate_call_summary(
                 caller_name="Unknown",
                 call_type="unknown",
